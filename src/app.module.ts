@@ -40,7 +40,10 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(UserLoggedMiddleware)
-      .exclude({ path: "auth/local", method: RequestMethod.ALL })
+      .exclude(
+        { path: "auth/local", method: RequestMethod.ALL },
+        { path: "users", method: RequestMethod.POST }
+      )
       .forRoutes(
         { path: "users", method: RequestMethod.ALL },
         { path: "auth/decode", method: RequestMethod.GET }

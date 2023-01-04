@@ -1,5 +1,5 @@
 import { Controller, Post, Body, Req, Get } from "@nestjs/common";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
 import { LocalStrategy } from "./strategies/local.auth";
 import { LocalAuthUserDTO } from "./strategies/local.auth.user.dto";
@@ -13,12 +13,14 @@ export class AuthController {
   ) {}
 
   @Post("local")
+  @ApiOperation({ summary: "Local Login with user and password" })
   async login(@Body() body: LocalAuthUserDTO) {
     return this.localAuthService.validate(body.email, body.senha);
   }
 
   @Get("decode")
   @ApiBearerAuth()
+  @ApiOperation({ summary: "Valid User JWT Token" })
   async decode(@Req() req: any) {
     return await this.authService.decode(req);
   }
