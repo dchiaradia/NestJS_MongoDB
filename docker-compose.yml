@@ -1,7 +1,8 @@
-version: "3.7"
+version: "3.8"
+
+name: NestJS_With_MongoDB
 
 services: 
- 
   mongo:
     image: mongo
     container_name: mongodb

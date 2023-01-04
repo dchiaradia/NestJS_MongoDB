@@ -9,16 +9,19 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   const config = new DocumentBuilder()
-    .setTitle("NestJS + MongoDB + Swagger")
-    .setDescription(
-      "Exemplo de utilização de NestJS com MongoDB, Swagger, e tratativas de respostas de sucesso e erro."
-    )
-    .setVersion("1.0")
-    .addTag("Users")
+    .setTitle(process.env.APP_TITLE)
+    .setDescription(process.env.APP_DESCRIPTION)
+    .setVersion(process.env.APP_VERSION)
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("api", app, document);
+  SwaggerModule.setup(process.env.SWAGGER_PATH, app, document);
 
-  await app.listen(3000);
+  await app.listen(process.env.API_PORT);
+  console.log("STARTING________________________________");
+  console.log("> API PORT     :", process.env.API_PORT);
+  console.log("> SWAGGER_PATH :", process.env.SWAGGER_PATH);
+  console.log("> TIMEZONE :", process.env.TZ);
+  console.log("________________________________________");
 }
 bootstrap();
