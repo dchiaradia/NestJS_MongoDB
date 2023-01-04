@@ -1,13 +1,13 @@
 import { Injectable, NestMiddleware } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
-import jwt_decode from "jwt-decode";
+import { AuthService } from "src/auth/auth.service";
 
 @Injectable()
 export class UserLoggedMiddleware implements NestMiddleware {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
+  constructor(private authService: AuthService) {}
   async use(req: Request, res: Response, next: NextFunction) {
-    console.log("Authorization Token: ", req.headers["authorization"]);
+    // console.log("Authorization Token: ", req.headers["authorization"]);
     const token = req.headers["authorization"];
 
     //CHECK HEADER
@@ -23,9 +23,8 @@ export class UserLoggedMiddleware implements NestMiddleware {
     }
 
     //DECODE TOKEN - CHECK USER AUTHORIZATION
-    const tokenDecoded = jwt_decode(token.replace("Bearer ", ""));
-    const validToken = true;
-    if (validToken != true) {
+    const jwtDecode = await this.authService.decode(req);
+    if (!jwtDecode["isValid"]) {
       res.status(403).json({
         status: "FAILED",
         httpCode: 403,
@@ -34,6 +33,7 @@ export class UserLoggedMiddleware implements NestMiddleware {
       });
       return;
     }
+
     next();
   }
 }
