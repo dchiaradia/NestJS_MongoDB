@@ -6,12 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { MyResponse } from "src/core/myResponse";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { AuthGuard } from "@nestjs/passport";
+import { Role } from "src/auth/role.decorator";
+import { RolesGuard } from "../auth/roles.guard";
+import { UserRole } from "./entities/user.roles.enum";
 
 @ApiTags("Users")
 @Controller("users")
@@ -30,6 +35,8 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
+  @Role(UserRole.ADMIN, UserRole.VENDOR)
+  @UseGuards(AuthGuard("jwt"), RolesGuard)
   @Get()
   @ApiOperation({ summary: "Return all users" })
   findAll() {

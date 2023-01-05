@@ -23,6 +23,12 @@ export class User extends Model {
     description: "Senha",
   })
   senha: string;
+
+  @Prop()
+  @ApiProperty({
+    description: "Role",
+  })
+  role: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

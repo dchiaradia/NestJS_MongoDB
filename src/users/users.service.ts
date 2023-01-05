@@ -74,6 +74,31 @@ export class UsersService {
     return response;
   }
 
+  async find(payload: any): Promise<MyResponseEntity> {
+    let response: MyResponseEntity;
+    try {
+      const data = await this.userModel.find(payload);
+      if (data.length <= 0) {
+        throw new Error(`Usuário não localizado.`);
+      }
+
+      response = {
+        status: "OK",
+        httpCode: 200,
+        description: "FIND ONE SUCCESS",
+        data: data,
+      };
+    } catch (e) {
+      response = {
+        status: "FAILED",
+        httpCode: 500,
+        description: e.message,
+        data: [],
+      };
+    }
+    return response;
+  }
+
   async findOneByEmail(email: string): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {

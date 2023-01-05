@@ -8,9 +8,11 @@ import { FitroDeExcecaoHttp } from "./core/filtro-de-excecao-http.filter";
 import { TransformaRespostaInterceptor } from "./core/http/transforma-resposta.interceptor";
 import { UserLoggedMiddleware } from "./middlewares/userLogged.middleware";
 import { UsersModule } from "./users/users.module";
-import { AuthModule } from "./auth/auth.module";
 import { AuthService } from "./auth/auth.service";
 import { JwtService } from "@nestjs/jwt/dist/jwt.service";
+import { AuthModule } from "./auth/auth.module";
+import { UsersService } from "./users/users.service";
+import { User, UserSchema } from "./users/entities/user.entity";
 
 const ENV = process.env.NODE_ENV;
 
@@ -18,6 +20,12 @@ const ENV = process.env.NODE_ENV;
   imports: [
     ConfigModule.forRoot({ envFilePath: `./env/${ENV}.env`, isGlobal: true }), //configuracao do arquivo de configuracoes
     MongooseModule.forRoot(process.env.MONGODB_CONNECTIONSTRING),
+    MongooseModule.forFeature([
+      {
+        name: User.name,
+        schema: UserSchema,
+      },
+    ]),
     AuthModule,
     UsersModule,
   ],
@@ -26,6 +34,7 @@ const ENV = process.env.NODE_ENV;
     AppService,
     AuthService,
     JwtService,
+    UsersService,
     {
       provide: APP_FILTER,
       useClass: FitroDeExcecaoHttp,

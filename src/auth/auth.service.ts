@@ -1,16 +1,43 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  Injectable,
+  UnauthorizedException,
+  UnprocessableEntityException,
+} from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { UsersService } from "src/users/users.service";
+import { LocalAuthUserDTO } from "./local.auth.user.dto";
+// import { UserRole } from "../users/user-roles.enum";
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private jwtService: JwtService
+  ) {}
 
-  async gerarToken(jsonObject: any) {
+  async signIn(data: LocalAuthUserDTO) {
+    const user = await this.usersService.find({
+      email: data.email,
+      senha: data.senha,
+    });
+
+    if (user === null) {
+      throw new UnauthorizedException("Credenciais inválidas");
+    }
+    if (user.httpCode != 200) {
+      throw new UnauthorizedException("Credenciais inválidas");
+    }
+    const jwtPayload = user.data[0];
+    const token = await this.jwtService.sign(this._toToken(jwtPayload));
+    return { token };
+  }
+
+  _toToken(data: any) {
     return {
-      access_token: this.jwtService.sign(jsonObject, {
-        secret: process.env.JWT_SECRET_KEY,
-        expiresIn: process.env.JWT_MINUTES_EXPIRE,
-      }),
+      id: data._id,
+      email: data.email,
+      nome: data.nome,
+      role: data.role,
     };
   }
 

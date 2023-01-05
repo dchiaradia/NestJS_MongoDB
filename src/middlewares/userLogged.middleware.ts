@@ -12,23 +12,23 @@ export class UserLoggedMiddleware implements NestMiddleware {
 
     //CHECK HEADER
     if (token == undefined) {
-      console.log("Authorization Token not defined in header, check again!");
+      console.log("Authentication Token not defined in header, check again!");
       res.status(403).json({
         status: "FAILED",
-        httpCode: 403,
-        description: "Authorization Token not defined in header, check again!",
+        httpCode: 401,
+        description: "Authentication Token not defined in header, check again!",
         data: { access_token: req.headers.access_token },
       });
       return;
     }
 
-    //DECODE TOKEN - CHECK USER AUTHORIZATION
+    //DECODE TOKEN - CHECK IF TOKEN IS VALID
     const jwtDecode = await this.authService.decode(req);
     if (!jwtDecode["isValid"]) {
       res.status(403).json({
         status: "FAILED",
-        httpCode: 403,
-        description: "User Authorization not is valid!",
+        httpCode: 401,
+        description: "User Authentication not is valid!",
         data: { access_token: req.headers.access_token },
       });
       return;
