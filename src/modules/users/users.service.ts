@@ -1,18 +1,17 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
 import { MyResponseEntity } from "../../core/myResponse";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { User } from "./entities/user.entity";
+import { MongoUsersService } from "../../handlers/mongodbHandler/users/mongo.users.service";
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: typeof User) {}
+  constructor(private dbUserService: MongoUsersService) {}
 
   async create(createUserDto: CreateUserDto): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.userModel.create(createUserDto);
+      const data = await this.dbUserService.create(createUserDto);
       response = {
         status: "OK",
         httpCode: 201,
@@ -21,12 +20,12 @@ export class UsersService {
       };
     } catch (e) {
       console.log(e);
-      // response = {
-      //   status: 'FAILED',
-      //   httpCode: 500,
-      //   description: e,
-      //   data: e,
-      // };
+      response = {
+        status: "FAILED",
+        httpCode: 500,
+        description: e,
+        data: e,
+      };
     }
 
     return response;
@@ -35,7 +34,7 @@ export class UsersService {
   async findAll(): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.userModel.find();
+      const data = await this.dbUserService.find({});
       response = {
         status: "OK",
         httpCode: 200,
@@ -56,7 +55,7 @@ export class UsersService {
   async findOne(id: string): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.userModel.findById(id);
+      const data = await this.dbUserService.findOne(id);
       response = {
         status: "OK",
         httpCode: 200,
@@ -77,7 +76,7 @@ export class UsersService {
   async find(payload: any): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.userModel.find(payload);
+      const data = await this.dbUserService.find(payload);
       if (data.length <= 0) {
         throw new Error(`Usuário não localizado.`);
       }
@@ -102,7 +101,7 @@ export class UsersService {
   async findOneByEmail(email: string): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.userModel.find({ email: email });
+      const data = await this.dbUserService.find({ email: email });
       if (data.length <= 0) {
         throw new Error(`Usuário não localizado pelo e-mail "${email}"`);
       }
@@ -130,7 +129,7 @@ export class UsersService {
   ): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.userModel.findByIdAndUpdate(id, updateUserDto);
+      const data = await this.dbUserService.update(id, updateUserDto);
       response = {
         status: "OK",
         httpCode: 200,
@@ -151,7 +150,7 @@ export class UsersService {
   async remove(id: string): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.userModel.findByIdAndDelete(id);
+      const data = await this.dbUserService.remove(id);
       response = {
         status: "OK",
         httpCode: 200,

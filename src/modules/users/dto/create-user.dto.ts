@@ -1,7 +1,8 @@
 import { Prop } from "@nestjs/mongoose";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString } from "class-validator";
-import { User } from "../entities/user.entity";
+import { User } from "../../../handlers/mongodbHandler/users/user.entity";
+import { UserRole } from "../entities/user.roles.enum";
 
 export class CreateUserDto {
   @Prop()
@@ -22,4 +23,10 @@ export class CreateUserDto {
     description: "Senha",
   })
   senha: string;
+
+  @Prop()
+  @ApiProperty({
+    description: "Role",
+  })
+  role: UserRole;
 }
