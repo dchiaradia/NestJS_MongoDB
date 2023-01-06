@@ -11,12 +11,12 @@ import {
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { MyResponse } from "src/core/myResponse";
+import { MyResponse } from "../../core/myResponse";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@nestjs/passport";
-import { Role } from "src/auth/role.decorator";
-import { RolesGuard } from "../auth/roles.guard";
+import { Role } from "../../auth/roles/role.decorator";
 import { UserRole } from "./entities/user.roles.enum";
+import { RolesGuard } from "../../auth/roles/roles.guard";
 
 @ApiTags("Users")
 @Controller("users")

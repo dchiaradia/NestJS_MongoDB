@@ -2,27 +2,45 @@ version: "3.8"
 
 name: NestJS_With_MongoDB
 
-services: 
+services:
+
+  backend:
+    container_name: 3.NodeJS-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo-express
+    ports:
+      - 3000:3000
+
   mongo:
+    container_name: 1.MongoDB
     image: mongo
-    container_name: mongodb
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: myDB
     ports:
       - "27017:27017"
+    volumes:
+      - ./docker-mongo-init.js:/docker-entrypoint-initdb.d/docker-mongo-init.js
 
   mongo-express:
+    container_name: 2.Mongo-Express
     image: mongo-express
-    container_name: mongo-express
     restart: always
+    depends_on:
+      - mongo
     ports:
       - 9091:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
-      
 
-
+networks:
+  default:
+    external:
+      name: docker.internal

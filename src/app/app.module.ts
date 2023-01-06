@@ -4,15 +4,15 @@ import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { FitroDeExcecaoHttp } from "./core/filtro-de-excecao-http.filter";
-import { TransformaRespostaInterceptor } from "./core/http/transforma-resposta.interceptor";
-import { UserLoggedMiddleware } from "./middlewares/userLogged.middleware";
-import { UsersModule } from "./users/users.module";
-import { AuthService } from "./auth/auth.service";
+import { FitroDeExcecaoHttp } from "../core/filtro-de-excecao-http.filter";
+import { TransformaRespostaInterceptor } from "../core/http/transforma-resposta.interceptor";
+import { UserLoggedMiddleware } from "../middlewares/userLogged.middleware";
+import { UsersModule } from "../modules/users/users.module";
+import { AuthService } from "../auth/auth.service";
 import { JwtService } from "@nestjs/jwt/dist/jwt.service";
-import { AuthModule } from "./auth/auth.module";
-import { UsersService } from "./users/users.service";
-import { User, UserSchema } from "./users/entities/user.entity";
+import { AuthModule } from "../auth/auth.module";
+import { UsersService } from "../modules/users/users.service";
+import { User, UserSchema } from "../modules/users/entities/user.entity";
 
 const ENV = process.env.NODE_ENV;
 

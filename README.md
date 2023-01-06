@@ -23,30 +23,32 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
-
 Este é um exemplo de um crud basico aplicando as seguintes tecnologias:
-
 1. NestJS (nodejs)
 2. MongoDB (banco de dados NoSQL)
 3. Swagger (documentação da api)
 4. Docker
 5. Tratamento de Respostas de Sucesso e Erros
+6. Middleware
+7. Autenticação JWT Token
+8. Autorização através de Guards
 
 ## Installation
-
 
 No terminal digite o comando abaixo para realizar a instalação:
 ```bash
 $ npm install
 ```
 
-Após a execução do comando acima execute o comando abaixo para levantar o Docker com o banco de dados MongoDB, a configuração do Docker você encontra no arquivo docker-compose.yml.
+## Docker Running the app
+
+Após o clone do repositorio, para executar o projeto no docker execute o comando abaixo.
 ```bash
-$ docker-compose up -d
+$ docker compose up  --build -d 
 ```
 
 
-## Running the app
+## Local Running the app
 
 ```bash
 # development
@@ -65,11 +67,7 @@ A documentação da API se dá através do pacote do Swagger e sua configuraçã
 
 Para acessar a documentação deve-se acessar o link:
 [http://localhost:3000/api/](http://localhost:3000/api/)
-.
-
-.
-
-.
+<br><br>
 
 ## NestJS - CRUD Generator
 
@@ -81,12 +79,8 @@ $ nest g resource
 
 Executando o comando acima, você deverá informar um nome para esse resource e automaticamente, o NestJS irá criar os controllers, modules, entities e services para a sua implementação.
 
-.
-
-.
-
+<br><br>
 ## Variaveis de ambiente
-
 
 Para o gerenciamento das variaiveis de ambiente, utilizamos o pacote:
 env-cmd
@@ -97,6 +91,8 @@ $ npm install env-cmd --save
 ```
 
 Com este pacote instalado podemos ir em nosso arquivo package.json e informar qual arquivo de env cada ambiente irá utilizar.
+
+Os arquivos do tipo ENV estão localizados na pasta env.
 
 Veja os exemplos abaixo do arquivo package.json onde colocamos um arquivo de env para cada ambiente.
 ```bash

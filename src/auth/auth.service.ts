@@ -1,11 +1,7 @@
-import {
-  Injectable,
-  UnauthorizedException,
-  UnprocessableEntityException,
-} from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { UsersService } from "src/users/users.service";
-import { LocalAuthUserDTO } from "./local.auth.user.dto";
+import { UsersService } from "../modules/users/users.service";
+import { LocalAuthUserDTO } from "./strategies/local.auth.user.dto";
 // import { UserRole } from "../users/user-roles.enum";
 
 @Injectable()

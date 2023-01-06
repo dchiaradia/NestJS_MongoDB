@@ -8,16 +8,17 @@ import {
   ValidationPipe,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { ApiBearerAuth } from "@nestjs/swagger";
-import { User } from "src/users/entities/user.entity";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
-import { LocalAuthUserDTO } from "./local.auth.user.dto";
+import { LocalAuthUserDTO } from "./strategies/local.auth.user.dto";
 
+@ApiTags("Auth")
 @Controller("auth")
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post("/signin")
+  @ApiOperation({ summary: "Make login and return token JWT" })
   async signIn(
     @Body(ValidationPipe) credentiaslsDto: LocalAuthUserDTO
   ): Promise<{ token: string }> {
@@ -26,6 +27,7 @@ export class AuthController {
 
   @Get("/me")
   @ApiBearerAuth()
+  @ApiOperation({ summary: "Decodifica o token" })
   @UseGuards(AuthGuard())
   async getMe(@Req() req): Promise<any> {
     return await this.authService.decode(req);
