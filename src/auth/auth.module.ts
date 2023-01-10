@@ -5,11 +5,11 @@ import { JwtModule } from "@nestjs/jwt";
 import { UsersService } from "../modules/users/users.service";
 import { PassportModule } from "@nestjs/passport";
 import { JwtStrategy } from "./strategies/jwt.strategy";
-import { MongoDBHandlerModule } from "../handlers/mongodbHandler/mongo.module";
+import { MongoDBModule } from "../repository/mongodb/mongo.module";
 
 @Module({
   imports: [
-    MongoDBHandlerModule,
+    MongoDBModule,
     PassportModule.register({ defaultStrategy: "jwt" }),
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,

@@ -1,7 +1,7 @@
 import { Prop } from "@nestjs/mongoose";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString } from "class-validator";
-import { User } from "../../../handlers/mongodbHandler/users/user.entity";
+import { User } from "../../../repository/mongodb/users/user.entity";
 import { UserRole } from "../entities/user.roles.enum";
 
 export class CreateUserDto {

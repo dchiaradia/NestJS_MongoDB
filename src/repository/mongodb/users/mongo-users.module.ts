@@ -1,7 +1,7 @@
-import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
-import { User, UserSchema } from "./users/user.entity";
-import { MongoUsersService } from "./users/mongo.users.service";
+import { User, UserSchema } from "./user.entity";
+import { MongoUsersRepositoryService } from "./mongo.users.service";
+import { Module } from "@nestjs/common";
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { MongoUsersService } from "./users/mongo.users.service";
     ]),
   ],
   controllers: [],
-  providers: [MongoUsersService],
+  providers: [MongoUsersRepositoryService],
   exports: [
     MongooseModule.forFeature([
       {
@@ -21,7 +21,7 @@ import { MongoUsersService } from "./users/mongo.users.service";
         schema: UserSchema,
       },
     ]),
-    MongoUsersService,
+    MongoUsersRepositoryService,
   ],
 })
-export class MongoDBHandlerModule {}
+export class MongoUsersModule {}

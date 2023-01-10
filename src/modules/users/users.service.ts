@@ -1,17 +1,17 @@
 import { Injectable } from "@nestjs/common";
+import { MongoUsersRepositoryService } from "../../repository/mongodb/users/mongo.users.service";
 import { MyResponseEntity } from "../../core/myResponse";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { MongoUsersService } from "../../handlers/mongodbHandler/users/mongo.users.service";
 
 @Injectable()
 export class UsersService {
-  constructor(private dbUserService: MongoUsersService) {}
+  constructor(private userRepository: MongoUsersRepositoryService) {}
 
   async create(createUserDto: CreateUserDto): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.dbUserService.create(createUserDto);
+      const data = await this.userRepository.create(createUserDto);
       response = {
         status: "OK",
         httpCode: 201,
@@ -34,7 +34,7 @@ export class UsersService {
   async findAll(): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.dbUserService.find({});
+      const data = await this.userRepository.find({});
       response = {
         status: "OK",
         httpCode: 200,
@@ -55,7 +55,7 @@ export class UsersService {
   async findOne(id: string): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.dbUserService.findOne(id);
+      const data = await this.userRepository.findById(id);
       response = {
         status: "OK",
         httpCode: 200,
@@ -76,8 +76,8 @@ export class UsersService {
   async find(payload: any): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.dbUserService.find(payload);
-      if (data.length <= 0) {
+      const data = await this.userRepository.find(payload);
+      if (data.table.length <= 0) {
         throw new Error(`Usuário não localizado.`);
       }
 
@@ -101,8 +101,8 @@ export class UsersService {
   async findOneByEmail(email: string): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.dbUserService.find({ email: email });
-      if (data.length <= 0) {
+      const data = await this.userRepository.find({ email: email });
+      if (data.table.length <= 0) {
         throw new Error(`Usuário não localizado pelo e-mail "${email}"`);
       }
 
@@ -129,7 +129,10 @@ export class UsersService {
   ): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.dbUserService.update(id, updateUserDto);
+      const data = await this.userRepository.findByIdAndUpdate(
+        id,
+        updateUserDto
+      );
       response = {
         status: "OK",
         httpCode: 200,
@@ -150,7 +153,7 @@ export class UsersService {
   async remove(id: string): Promise<MyResponseEntity> {
     let response: MyResponseEntity;
     try {
-      const data = await this.dbUserService.remove(id);
+      const data = await this.userRepository.findByIdAndDelete(id);
       response = {
         status: "OK",
         httpCode: 200,

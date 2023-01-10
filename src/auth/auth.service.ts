@@ -23,7 +23,7 @@ export class AuthService {
     if (user.httpCode != 200) {
       throw new UnauthorizedException("Credenciais inválidas");
     }
-    const jwtPayload = user.data[0];
+    const jwtPayload = user.data.table[0];
     const token = await this.jwtService.sign(this._toToken(jwtPayload));
     return { token };
   }

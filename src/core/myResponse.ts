@@ -1,5 +1,5 @@
-import { NestResponseBuilder } from './http/nest-response-builder';
-import { IsString, IsNumber } from 'class-validator';
+import { NestResponseBuilder } from "./http/nest-response-builder";
+import { IsString, IsNumber } from "class-validator";
 
 export class MyResponseEntity {
   @IsString()
@@ -15,11 +15,11 @@ export class MyResponseEntity {
   data?: any;
 
   constructor(
-    status = 'OK',
+    status = "OK",
     httpCode = 200,
-    description = '',
+    description = "",
     headers?,
-    data?,
+    data?
   ) {
     this.status = status;
     this.httpCode = httpCode;
@@ -32,9 +32,9 @@ export class MyResponseEntity {
 export class MyResponse {
   http(response: MyResponseEntity) {
     const result = {
-      status: response.status == undefined ? 'OK' : response.status,
+      status: response.status == undefined ? "OK" : response.status,
       description:
-        response.description == undefined ? '' : response.description,
+        response.description == undefined ? "" : response.description,
       data: response.data == undefined ? {} : response.data,
     };
 

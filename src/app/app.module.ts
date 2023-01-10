@@ -12,8 +12,8 @@ import { AuthService } from "../auth/auth.service";
 import { JwtService } from "@nestjs/jwt/dist/jwt.service";
 import { AuthModule } from "../auth/auth.module";
 import { UsersService } from "../modules/users/users.service";
-import { User, UserSchema } from "../handlers/mongodbHandler/users/user.entity";
-import { MongoDBHandlerModule } from "../handlers/mongodbHandler/mongo.module";
+import { User, UserSchema } from "../repository/mongodb/users/user.entity";
+import { MongoDBModule } from "../repository/mongodb/mongo.module";
 
 const ENV = process.env.NODE_ENV;
 
@@ -27,7 +27,7 @@ const ENV = process.env.NODE_ENV;
         schema: UserSchema,
       },
     ]),
-    MongoDBHandlerModule,
+    MongoDBModule,
     AuthModule,
     UsersModule,
   ],
